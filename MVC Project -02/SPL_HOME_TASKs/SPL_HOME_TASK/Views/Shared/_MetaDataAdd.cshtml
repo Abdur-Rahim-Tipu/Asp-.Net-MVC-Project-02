@@ -1,0 +1,25 @@
+﻿@model SPL_HOME_TASK.Models.MetaDataInformation
+<tr id="meta-insert">
+    <td></td>
+    <td>
+        @Html.TextBoxFor(x => x.MetaName, new { @class = "form-control form-Control-sm" })
+        <div>
+            @Html.ValidationMessageFor(x => x.MetaName, "", new { @class = "text-danger" })
+        </div>
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.MetaNameBangla, new { @class = "form-control form-Control-sm" })
+        <div>
+            @Html.ValidationMessageFor(x => x.MetaNameBangla, "", new { @class = "text-danger" })
+        </div>
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.Description, new { @class = "form-control form-Control-sm" })
+        <div>
+            @Html.ValidationMessageFor(x => x.Description, "", new { @class = "text-danger" })
+        </div>
+    </td>
+    <td>
+        <button type="button" id="meta-add" class="btn btn-primary btn-sm"><span class="bi bi-plus"></span></button>
+    </td>
+</tr>

@@ -1,0 +1,39 @@
+﻿@model SPL_HOME_TASK.Models.FileInformation
+<tr>
+    <td></td>
+    <td>
+        @Html.TextBoxFor(x => x.FileNo, new { @class = "form-control from-control-sm" })
+        <div>
+            @Html.ValidationMessageFor(x => x.FileNo, "", new { @class = "text-danger" })
+        </div>
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.FileName, new { @class = "form-control from-control-sm" })
+        <div>
+            @Html.ValidationMessageFor(x => x.FileName, "", new { @class = "text-danger" })
+        </div>
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.FileNameBangla, new { @class = "form-control from-control-sm" })
+        <div>
+            @Html.ValidationMessageFor(x => x.FileNameBangla, "", new { @class = "text-danger" })
+        </div>
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.FilePath, new { @class = "form-control from-control-sm file", type = "file" })
+        <div>
+            @Html.ValidationMessageFor(x => x.FilePath, "", new { @class = "text-danger" })
+        </div>
+    </td>
+    <td>
+        @Html.TextBoxFor(x => x.Description, new { @class = "form-control from-control-sm", id = "f-Description" })
+        <div>
+            @Html.ValidationMessageFor(x => x.Description, "", new { @class = "text-danger" })
+        </div>
+    </td>
+
+    <td>
+        <button type="button" id="f-add" class="btn btn-primary btn-sm"><span class="bi bi-plus"></span></button>
+    </td>
+</tr>
+

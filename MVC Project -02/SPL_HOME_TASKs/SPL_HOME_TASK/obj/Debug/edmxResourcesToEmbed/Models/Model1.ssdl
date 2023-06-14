@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SPL_HOME_TASKModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="DocumentCategoryInfo">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoryName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="CategoryNameBangla" Type="nvarchar" MaxLength="250" />
+    <Property Name="Description" Type="nvarchar" MaxLength="500" />
+    <Property Name="Status" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DocumentInformation">
+    <Key>
+      <PropertyRef Name="DocumentyIdentity" />
+    </Key>
+    <Property Name="DocumentyIdentity" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+    <Property Name="DocumentReferenceName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="DocumentDate" Type="date" Nullable="false" />
+    <Property Name="DocumentName" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="DocumentNameBangla" Type="nvarchar" MaxLength="500" />
+    <Property Name="Description" Type="nvarchar" MaxLength="1500" />
+    <Property Name="Status" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FileInformation">
+    <Key>
+      <PropertyRef Name="FileIdentity" />
+    </Key>
+    <Property Name="FileIdentity" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DocumentyIdentity" Type="bigint" Nullable="false" />
+    <Property Name="FileNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="FileName" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="FileNameBangla" Type="nvarchar" MaxLength="450" />
+    <Property Name="Description" Type="nvarchar" MaxLength="500" />
+    <Property Name="FilePath" Type="nvarchar" MaxLength="500" />
+    <Property Name="FileStatus" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="MetaDataInformation">
+    <Key>
+      <PropertyRef Name="MetaIdentity" />
+    </Key>
+    <Property Name="MetaIdentity" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DocumentyIdentity" Type="bigint" Nullable="false" />
+    <Property Name="MetaName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="MetaNameBangla" Type="nvarchar" MaxLength="250" />
+    <Property Name="Description" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <Association Name="FK__DocumentI__Categ__276EDEB3">
+    <End Role="DocumentCategoryInfo" Type="Self.DocumentCategoryInfo" Multiplicity="1" />
+    <End Role="DocumentInformation" Type="Self.DocumentInformation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DocumentCategoryInfo">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="DocumentInformation">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__FileInfor__Docum__2F10007B">
+    <End Role="DocumentInformation" Type="Self.DocumentInformation" Multiplicity="1" />
+    <End Role="FileInformation" Type="Self.FileInformation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DocumentInformation">
+        <PropertyRef Name="DocumentyIdentity" />
+      </Principal>
+      <Dependent Role="FileInformation">
+        <PropertyRef Name="DocumentyIdentity" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__MetaDataI__Docum__2B3F6F97">
+    <End Role="DocumentInformation" Type="Self.DocumentInformation" Multiplicity="1" />
+    <End Role="MetaDataInformation" Type="Self.MetaDataInformation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DocumentInformation">
+        <PropertyRef Name="DocumentyIdentity" />
+      </Principal>
+      <Dependent Role="MetaDataInformation">
+        <PropertyRef Name="DocumentyIdentity" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SPL_HOME_TASKModelStoreContainer">
+    <EntitySet Name="DocumentCategoryInfo" EntityType="Self.DocumentCategoryInfo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DocumentInformation" EntityType="Self.DocumentInformation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FileInformation" EntityType="Self.FileInformation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MetaDataInformation" EntityType="Self.MetaDataInformation" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__DocumentI__Categ__276EDEB3" Association="Self.FK__DocumentI__Categ__276EDEB3">
+      <End Role="DocumentCategoryInfo" EntitySet="DocumentCategoryInfo" />
+      <End Role="DocumentInformation" EntitySet="DocumentInformation" />
+    </AssociationSet>
+    <AssociationSet Name="FK__FileInfor__Docum__2F10007B" Association="Self.FK__FileInfor__Docum__2F10007B">
+      <End Role="DocumentInformation" EntitySet="DocumentInformation" />
+      <End Role="FileInformation" EntitySet="FileInformation" />
+    </AssociationSet>
+    <AssociationSet Name="FK__MetaDataI__Docum__2B3F6F97" Association="Self.FK__MetaDataI__Docum__2B3F6F97">
+      <End Role="DocumentInformation" EntitySet="DocumentInformation" />
+      <End Role="MetaDataInformation" EntitySet="MetaDataInformation" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVC5 Application</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/Icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <style>
+        body{
+            padding-top:70px;
+        }
+        .lnk:hover{
+            color:black;
+
+        }
+        .cl {
+            color: darkturquoise;
+            font-size:1.15rem;
+        }
+        .font-w{
+            font-weight:bold;
+        }
+    </style>
+    @RenderSection("styles", false)
+</head>
+<body>
+    <div class="navbar navbar-light bg-light navbar-expand-md fixed-top shadow-sm">
+        <div class="container-fluid px-3">
+
+
+            <span>
+                <img src="~/Photos/logo.png" class="img-thumbnail" style=" width:50px; height:50px " />
+            </span>
+            <span class="navbar-brand">
+                Document <sup>Management</sup>
+            </span>
+            <div class="navbar-collapse collapse mx-5">
+                <ul class="navbar-nav">
+                   
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"> @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link bi bi-house-door-fill cl lnk" })</li>
+                    <li class="nav-item">@Html.ActionLink("DFA", "Index", "Documents", new { }, new { @class = "nav-link cl lnk" })</li>
+                   
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Documents
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>@Html.ActionLink("Document Categories", "Index", "Documents", new { }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Document Information", "Index", "Info", new { }, new { @class = "dropdown-item" })</li>
+
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid body-content px-3">
+        @RenderBody()
+    </div>
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    @RenderSection("scripts", false)
+</body>
+</html>

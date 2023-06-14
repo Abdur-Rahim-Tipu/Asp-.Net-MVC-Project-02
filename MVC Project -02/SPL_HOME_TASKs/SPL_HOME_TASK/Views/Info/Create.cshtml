@@ -1,0 +1,292 @@
+﻿@model SPL_HOME_TASK.Models.DocumentInformation
+@{
+    ViewBag.Title = "Create";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alertError" style="display:none">
+            <strong>Failed!</strong> Failed to save data.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert" id="alertSuccess" style="display:none">
+            <strong>Success!</strong> Data saved.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="d-flex justify-content-between text-white bg-secondary p-2">
+            <h6 class="mt-1 ms-2">Document Details Information</h6>
+            <div>
+                <a class="btn btn-sm text-light"  href="/Info/Index">-</a>
+            </div>
+        </div>
+        
+        <form id="f-meta">
+            <table class="table table-bordered">
+                <thead class="bg-light">
+                    <tr>
+                        <th>Document Category</th>
+                        <th>Document Date</th>
+                        <th>Document Reference</th>
+                        <th>Document Name</th>
+                        <th>Document Name Bangla</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+
+                        <td>
+                            @Html.DropDownListFor(x => x.CategoryId, new SelectList(ViewBag.Categories, "CategoryId", "CategoryName"), "", new { @class = "form-select form-select-sm" })
+                            <div>@Html.ValidationMessageFor(x => x.CategoryId, "", "text-danger")</div>
+                        </td>
+                        <td>
+                            <div class="input-group input-group-sm date" data-provide="datepicker" data-date-format="yyyy-mm-dd">
+
+                                @Html.TextBoxFor(x => x.DocumentDate, new { @class = "form-control form-control-sm" })
+                                <button class="btn btn-outline-secondary btn-sm" type="button" id="button-addon2"><i class="bi bi-calendar-date-fill"></i></button>
+
+                            </div>
+                            <div>@Html.ValidationMessageFor(x => x.DocumentDate, "", "text-danger")</div>
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.DocumentReferenceName, new { @class = "form-control form-control-sm" })
+                            <div>@Html.ValidationMessageFor(x => x.DocumentReferenceName, "", "text-danger")</div>
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.DocumentName, new { @class = "form-control form-control-sm" })
+                            <div>@Html.ValidationMessageFor(x => x.DocumentName, "", "text-danger")</div>
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.DocumentNameBangla, new { @class = "form-control form-control-sm" })
+                            <div>@Html.ValidationMessageFor(x => x.DocumentNameBangla, "", "text-danger")</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+
+                <table class="table table-bordered">
+                    <thead class="bg-info text-light">
+                        <tr>
+                            <td>Serial</td>
+                            <th>Meta name</th>
+                            <th>Meta name bangla</th>
+                            <th>Meta description</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="meta-info" class="bg-light">
+                    </tbody>
+                    <tfoot>
+                        @Html.Partial("_MetaDataAdd")
+                    </tfoot>
+                </table>
+
+            </div>
+            <div>
+                <table class="table table-bordered">
+                    <thead class="bg-info text-light">
+                        <tr>
+                            <td>Serial</td>
+                            <th>File no</th>
+                            <th>File name</th>
+                            <th>File name bangla</th>
+                            <th>File upload</th>
+                            <th>File description</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="file-info">
+                    </tbody>
+                    <tfoot>
+                        @Html.Partial("_FileInfoAdd")
+                    </tfoot>
+                </table>
+
+            </div>
+        </form>
+        <div class="d-flex justify-content-end my-2 me-2">
+            <button type="button" id="insert" class="btn btn-primary btn-sm">&nbsp;Submit&nbsp;</button>
+        </div>
+    </div>
+</div>
+<div>
+    
+</div>
+@section styles {
+    <link href="~/Content/Icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+}
+@section scripts
+{
+    <script src="~/Scripts/jquery-3.7.0.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
+    <script>
+        var metainfo = [];
+        var fileinfo = [];
+        $("#meta-add").click(() => {
+            var validator = $("#f-meta").validate();
+            if (!validator.element("#MetaName") || !validator.element("#MetaNameBangla") || !validator.element("#Description")) {
+                return;
+            }
+            metainfo.push({
+                MetaName: $("#MetaName").val(),
+                MetaNameBangla: $("#MetaNameBangla").val(),
+                Description: $("#Description").val()
+
+            });
+            console.log(metainfo);
+            $("#meta-info").html("")
+            metainfo.forEach((v, i) => {
+                $("#meta-info").append(`
+                    <tr>
+                        <td>${i+1}</td>
+                        <td>${v.MetaName} </td>
+                        <td>${v.MetaNameBangla} </td>
+                        <td>${v.Description} </td>
+                        <td><button type="button" class="btn btn-danger btn-sm meta-del" data-index='${i}'><i class="bi bi-trash"></i></button></td>
+                    </tr>
+                `)
+            });
+            $("#MetaName").val('');
+            $("#MetaNameBangla").val('');
+            $("#Description").val('');
+        });
+        $("#f-add").click(() => {
+            var validator = $("#f-meta").validate();
+            if (!validator.element("#FileNo") || !validator.element("#FileName") || !validator.element("#FileNameBangla") || !validator.element("#FilePath") || !validator.element("#f-Description")) {
+                return;
+            }
+            let fileinfoData = {
+                FileNo: $("#FileNo").val(),
+                FileName: $("#FileName").val(),
+                FileNameBangla: $("#FileNameBangla").val(),
+                Description: $("#f-Description").val(),
+                FilePath: ''
+
+            }
+            if (document.getElementById("FilePath").files.length)
+                fileinfoData.FilePath = document.getElementById("FilePath").files[0];
+            fileinfo.push(fileinfoData);
+            $("#file-info").html("")
+            fileinfo.forEach((v, i) => {
+                $("#file-info").append(`
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td>${v.FileNo} </td>
+                        <td>${v.FileName} </td>
+                        <td>${v.FileNameBangla} </td>
+                        <td>${v.FilePath ? v.FilePath.name: ''} </td>
+                        <td>${v.Description} </td>
+                        <td><button type="button" class="btn btn-danger btn-sm f-del" data-index='${i}'><i class="bi bi-trash"></i></button></td>
+                    </tr>
+                `)
+            });
+            $("#FileNo").val('');
+            $("#FileName").val('');
+            $("#FileNameBangla").val('');
+            $("#f-Description").val('');
+            document.getElementById("FilePath").value = null;
+        });
+        $("#insert").click(() => {
+            var validator = $("#f-meta").validate();
+            if (!validator.element("#CategoryId") || !validator.element("#DocumentDate") || !validator.element("#DocumentReferenceName") || !validator.element("#DocumentName") || !validator.element("#DocumentNameBangla"))  {
+                return;
+            }
+            var formData = new FormData();
+            fileinfo.forEach((v, i) => {
+                if (v.FilePath) {
+                    formData.append("files"+i, v.FilePath);
+                }
+            });
+            $.ajax({
+                url: '/Info/Upload',
+                data: formData,
+                type: 'POST',
+                contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+                processData: false, // NEEDED, DON'T OMIT THIS
+                success: r => {
+                    r.forEach(d => {
+                        let found = fileinfo.findIndex(f => f.FilePath?.name == d.FileName);
+                        if (found >= 0) {
+                            fileinfo[found].FilePath = d.SavedFileName;
+                        }
+                    });
+                    //console.log(fileinfo);
+                    SaveInfo();
+                }
+            });
+        });
+        $(document).on("click", "button.meta-del", function () {
+            let index = $(this).data("index");
+            metainfo.splice(index, 1);
+            $("#meta-info").html("")
+            metainfo.forEach((v, i) => {
+                $("#meta-info").append(`
+                <tr>
+                        <td>${i + 1}</td>
+                        <td>${v.MetaName} </td>
+                        <td>${v.MetaNameBangla} </td>
+                        <td>${v.Description} </td>
+                        <td><button type="button" class="btn btn-danger btn-sm meta-del" data-index='${i}'><i class="bi bi-trash"></i></button></td>
+                    </tr>
+
+                `)
+            });
+        });
+        $(document).on("click", "button.f-del", function () {
+            let index = $(this).data("index");
+            fileinfo.splice(index, 1);
+            console.log(fileinfo)
+            $("#file-info").html("")
+            fileinfo.forEach((v, i) => {
+                $("#file-info").append(`
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td>${v.FileNo} </td>
+                        <td>${v.FileName} </td>
+                        <td>${v.FileNameBangla} </td>
+                        <td>${v.FilePath.name} </td>
+                        <td>${v.Description} </td>
+                        <td><button type="button" class="btn btn-danger btn-sm f-del" data-index='${i}'><i class="bi bi-trash"></i></button></td>
+                    </tr>
+                `)
+            });
+        });
+        //$(document).on("change", ".file", function () {
+        //    console.log(document.getElementById("FilePath").files[0])
+        //});
+        function SaveInfo() {
+            var data = {
+                CategoryId: $("#CategoryId").val(),
+                DocumentName: $("#DocumentName").val(),
+                DocumentReferenceName: $("#DocumentReferenceName").val(),
+                DocumentDate: $("#DocumentDate").val(),
+                DocumentNameBangla: $("#DocumentNameBangla").val(),
+                MetaDataInformations: metainfo,
+                FileInformations: fileinfo
+            };
+            console.log(data);
+            $.ajax({
+                type: "post",
+                url: "/Info/Insert",
+                dataType: "json",
+                data: { data: data },
+                success: r => {
+                    if (r.success == true) {
+                        $("#alertSuccess").show();
+                        $("#f-meta").trigger('reset');
+                        metainfo = [];
+                        fileinfo = [];
+                        $("#file-info").html("")
+                        $("#meta-info").html("")
+                    }
+                    else {
+                        $("#alertError").show();
+                    }
+                }
+            })
+        }
+    </script>
+}

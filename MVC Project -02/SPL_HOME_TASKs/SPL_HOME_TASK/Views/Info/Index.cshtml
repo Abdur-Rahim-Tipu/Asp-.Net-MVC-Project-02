@@ -1,0 +1,87 @@
+﻿@model IEnumerable<SPL_HOME_TASK.Models.DocumentInformation>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="row justify-content-end">
+            <div class="col-6 d-flex justify-content-end mt-2 mb-2">
+                @using (Html.BeginForm())
+                {
+                    <p>
+                        <label>Document Name:</label>@Html.TextBox("SearchString")
+                        <input type="submit" value="Search" />
+                    </p>
+                }
+            </div>
+        </div>
+        <div class="d-flex justify-content-between bg-secondary text-white p-2">
+            <h6>Document Infomation</h6>
+            <div>
+
+                <a href="@Url.Action("Create", "Info")" class="btn btn-light btn-sm"><i class="bi bi-plus"></i></a>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>Category</th>
+                    <th>
+                        @Html.ActionLink("Document Name", "Index", new { Sorting_Order = ViewBag.SortingName })
+                    </th>
+                    <th>
+                        @Html.ActionLink("Document Date", "Index", new { Sorting_Order = ViewBag.SortingName })
+                    </th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="categories">
+                @foreach (var d in Model)
+                {
+                    <tr id="doc_@d.DocumentyIdentity">
+                        <td>@d.DocumentCategoryInfo.CategoryName</td>
+                        <td>@d.DocumentName</td>
+                        <td>@string.Format($"{d.DocumentDate:dd/MM/yyyy}")</td>
+
+                        <td>
+
+                            @Html.ActionLink("Edit", "Edit", "Info", new { id = d.DocumentyIdentity }, new { @class = "btn btn-info text-light btn-sm edit" })
+                            @*<button type="button" class="btn btn-info text-light btn-sm edit" data-pk="@d.DocumentyIdentity">Edit</button>*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-6 d-flex justify-content-start">
+                <p>Showing 1 to 5 of @ViewBag.Countdata Entries</p>
+            </div>
+            <div class=" col-6 d-flex justify-content-end">
+                <ul class="pagination pagination-sm">
+                    <li class="page-item">@Html.ActionLink("Previous", "Index", "Info", new { page = 1 }, new { @class = "page-link" })</li>
+                    @for (var i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        if (ViewBag.Current == i)
+                        {
+                            <li class="page-item active">@Html.ActionLink(i.ToString(), "Index", "Info", new { page = i }, new { @class = "page-link" })</li>
+                        }
+                        else
+                        {
+                            <li class="page-item">@Html.ActionLink(i.ToString(), "Index", "Info", new { page = i }, new { @class = "page-link" })</li>
+                        }
+
+                    }
+                    <li class="page-item">@Html.ActionLink("Next", "Index", "Info", new { page = ViewBag.TotalPages }, new { @class = "page-link" })</li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section styles
+{
+    <link href="~/Content/Icons/font/bootstrap-icons.css" rel="stylesheet" />
+}

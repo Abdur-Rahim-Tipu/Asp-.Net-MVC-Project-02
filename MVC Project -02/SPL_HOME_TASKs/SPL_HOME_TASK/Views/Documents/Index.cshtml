@@ -1,0 +1,222 @@
+﻿
+@model IEnumerable<SPL_HOME_TASK.Models.DocumentCategoryInfo>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row shadow">
+    <div class="col-12">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alertError" style="display:none">
+            <strong>Failed!</strong> Failed to save data. <strong>Plase!</strong> Insert Valid Data And <strong>Unique</strong> CategoryName.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert" id="alertSuccess" style="display:none">
+            <strong>Success!</strong> Data saved.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    <div class="col-12 shadow" id="insert" style="display:none">
+        <div class="d-flex justify-content-between text-white bg-secondary p-2">
+            <h6 class="mt-1 ms-2">Document Category</h6>
+            <div>
+
+                <button type="button" class="btn  btn-sm" id="i-minus"><i class="bi bi-dash text-light"></i></button>
+            </div>
+        </div>
+        <div>
+            @Html.Action("CategoryInsert", "Documents")
+        </div>
+    </div>
+    <div class="col-12 shadow-none h-25"><h1></h1></div>
+    <div class="col-12 shadow" id="edit" style="display:none">
+        <div class="d-flex justify-content-between text-white bg-secondary p-2">
+            <h6 class="mt-1 ms-2 ">Document Category</h6>
+            <div>
+
+                <button type="button" class="btn  btn-sm" id="u-minus"><i class="bi bi-dash text-light"></i></button>
+            </div>
+        </div>
+        <div>
+            @Html.Action("CategoryEdit", "Documents")
+        </div>
+    </div>
+    <div class="col-12 shadow-none h-25">
+        <h1 class=""></h1>
+    </div>
+    <div class="col-12 shadow">
+        <div class="d-flex justify-content-between bg-info text-white p-2">
+            <h6 class="mt-1 ms-2">Document Category List</h6>
+            <div>
+                <button type="button" class="btn  btn-sm" id="plus"><i class="bi bi-plus text-light"></i></button>
+                <button type="button" class="btn  btn-sm" id="minus" style="display:none"><i class="bi bi-dash text-light"></i></button>
+            </div>
+        </div>
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>Category Name</th>
+                    <th>Category Name Bangla</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="categories">
+                @foreach (var c in Model)
+                {
+                    <tr id="cat_@c.CategoryId">
+                        <td>@c.CategoryName</td>
+                        <td>@c.CategoryNameBangla</td>
+                        <td>@c.Description</td>
+                        <td>
+                            <button type="button" class="btn btn-info btn-sm edit" data-pk="@c.CategoryId"><i class="bi bi-pencil-square text-light"></i></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section styles
+{
+    <link href="~/Content/Icons/font/bootstrap-icons.css" rel="stylesheet" />
+}
+@section scripts
+{
+    <script src="~/Scripts/jquery-3.7.0.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        var categories = [];
+        $(() => {
+            //data
+
+            $.ajax({
+                type: "GET",
+                url: "/Documents/CategoryList",
+                dataType: "json",
+                success: r => {
+                    categories = r;
+                }
+            })
+            $("#plus").click(() => {
+                $("#insert").show();
+                $("#plus").hide();
+                $("#minus").show();
+            });
+            $("#minus").click(() => {
+                $("#insert").hide();
+                $("#plus").show();
+                $("#minus").hide();
+            });
+            $("#i-minus").click(() => {
+                $("#insert").hide();
+                $("#plus").show();
+                $("#minus").hide();
+            });
+            $("#insert-submit").click(() => {
+                var valid = $("#fcat-insert").valid();
+                if (valid) {
+                    let data = {
+                        CategoryName: $("#fcat-insert #CategoryName").val(),
+                        CategoryNameBangla: $("#fcat-insert #CategoryNameBangla").val(),
+                        Description: $("#fcat-insert #Description").val()
+                    };
+                    console.log(data);
+                    $.ajax({
+                        type: "POST",
+                        url: "/Documents/CategoryInsert",
+                        dataType: "json",
+
+                        data: { model: data },
+                        success: r => {
+                            console.log(r);
+                            categories.push(r.data);
+                            console.log(categories);
+                            if (r.success == true) {
+                                $("#categories").append(`<tr id="cat_${r.data.CategoryId}">
+                                    <td>${r.data.CategoryName}</td>
+                                    <td>${r.data.CategoryNameBangla}</td>
+                                    <td>${r.data.Description}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-info btn-sm edit" data-pk="${r.data.CategoryId}"><i class="bi bi-pencil-square text-light"></i></button>
+                                    </td>
+                            </tr>`)
+                                $("#msg").html(r.message);
+                                $("#alertSuccess").show();
+                                $("#fcat-insert").trigger('reset');
+                            }
+                            else {
+                                $("#alertError").show();
+                            }
+                        }
+                    })
+
+                }
+            });
+            $("#update-submit").click(() => {
+                var valid = $("#fcat-edit").valid();
+                if (valid) {
+                    let data = {
+                        CategoryName: $("#fcat-edit #CategoryName").val(),
+                        CategoryNameBangla: $("#fcat-edit #CategoryNameBangla").val(),
+                        Description: $("#fcat-edit #Description").val(),
+                        CategoryId: $("#fcat-edit #CategoryId").val()
+                    };
+                    console.log(data);
+                    $.ajax({
+                        type: "POST",
+                        url: "/Documents/CategoryEdit",
+                        dataType: "json",
+
+                        data: { model: data },
+                        success: r => {
+                            console.log(r);
+                            if (r.success == true) {
+                                $(`#cat_${r.data.CategoryId}`).html(`
+                                <td>${r.data.CategoryName}</td>
+                                    <td>${r.data.CategoryNameBangla}</td>
+                                    <td>${r.data.Description}</td>
+                                    <td>
+                                         <button type="button" class="btn btn-info btn-sm edit" data-pk="${r.CategoryId}"><i class="bi bi-pencil-square text-light"></i></button>
+                                    </td>
+                                `)
+                            }
+                        }
+                    })
+
+                }
+            });
+            $(document).on("click", "button.edit", function () {
+                let id = $(this).data("pk");
+                let i = categories.findIndex(x => x.CategoryId == id)
+                if (i >= 0) {
+                    console.log(categories[i]);
+                    $("#fcat-edit #CategoryName").val(categories[i].CategoryName);
+                    $("#fcat-edit #CategoryNameBangla").val(categories[i].CategoryNameBangla);
+                    $("#fcat-edit #Description").val(categories[i].Description);
+                    $("#fcat-edit #CategoryId").val(categories[i].CategoryId);
+                    $("#edit").show();
+
+                }
+            });
+            $("#u-minus").click(() => {
+                $("#edit").hide();
+                $("#fcat-edit").trigger('reset');
+            });
+            
+        })
+        function catFunction(id) {     
+            let i = categories.findIndex(x => x.CategoryId == id)
+            if (i >= 0) {
+                console.log(categories[i]);
+                document.getElementById("#fcat-edit #CategoryName").value(categories[i].CategoryName);
+                document.getElementById("#fcat-edit #CategoryNameBangla").value(categories[i].CategoryNameBangla);
+                document.getElementById("#fcat-edit #Description").value(categories[i].Description);
+                document.getElementById("#fcat-edit #CategoryId").value(categories[i].CategoryId);
+                document.getElementById("#edit").show();
+            }
+            
+        }
+    </script>
+}

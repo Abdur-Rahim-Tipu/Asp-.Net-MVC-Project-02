@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SPL_HOME_TASKModelStoreContainer" CdmEntityContainer="SPL_HOME_TASKEntities">
+    <EntitySetMapping Name="DocumentCategoryInfoes">
+      <EntityTypeMapping TypeName="SPL_HOME_TASKModel.DocumentCategoryInfo">
+        <MappingFragment StoreEntitySet="DocumentCategoryInfo">
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="CategoryNameBangla" ColumnName="CategoryNameBangla" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DocumentInformations">
+      <EntityTypeMapping TypeName="SPL_HOME_TASKModel.DocumentInformation">
+        <MappingFragment StoreEntitySet="DocumentInformation">
+          <ScalarProperty Name="DocumentyIdentity" ColumnName="DocumentyIdentity" />
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="DocumentReferenceName" ColumnName="DocumentReferenceName" />
+          <ScalarProperty Name="DocumentDate" ColumnName="DocumentDate" />
+          <ScalarProperty Name="DocumentName" ColumnName="DocumentName" />
+          <ScalarProperty Name="DocumentNameBangla" ColumnName="DocumentNameBangla" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FileInformations">
+      <EntityTypeMapping TypeName="SPL_HOME_TASKModel.FileInformation">
+        <MappingFragment StoreEntitySet="FileInformation">
+          <ScalarProperty Name="FileIdentity" ColumnName="FileIdentity" />
+          <ScalarProperty Name="DocumentyIdentity" ColumnName="DocumentyIdentity" />
+          <ScalarProperty Name="FileNo" ColumnName="FileNo" />
+          <ScalarProperty Name="FileName" ColumnName="FileName" />
+          <ScalarProperty Name="FileNameBangla" ColumnName="FileNameBangla" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+          <ScalarProperty Name="FileStatus" ColumnName="FileStatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MetaDataInformations">
+      <EntityTypeMapping TypeName="SPL_HOME_TASKModel.MetaDataInformation">
+        <MappingFragment StoreEntitySet="MetaDataInformation">
+          <ScalarProperty Name="MetaIdentity" ColumnName="MetaIdentity" />
+          <ScalarProperty Name="DocumentyIdentity" ColumnName="DocumentyIdentity" />
+          <ScalarProperty Name="MetaName" ColumnName="MetaName" />
+          <ScalarProperty Name="MetaNameBangla" ColumnName="MetaNameBangla" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

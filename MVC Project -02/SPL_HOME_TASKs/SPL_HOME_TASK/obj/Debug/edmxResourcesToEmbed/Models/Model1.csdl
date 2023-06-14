@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SPL_HOME_TASKModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="DocumentCategoryInfo">
+    <Key>
+      <PropertyRef Name="CategoryId" />
+    </Key>
+    <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CategoryNameBangla" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Status" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="DocumentInformations" Relationship="Self.FK__DocumentI__Categ__276EDEB3" FromRole="DocumentCategoryInfo" ToRole="DocumentInformation" />
+  </EntityType>
+  <EntityType Name="DocumentInformation">
+    <Key>
+      <PropertyRef Name="DocumentyIdentity" />
+    </Key>
+    <Property Name="DocumentyIdentity" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="DocumentReferenceName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DocumentDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="DocumentName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DocumentNameBangla" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="1500" FixedLength="false" Unicode="true" />
+    <Property Name="Status" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="DocumentCategoryInfo" Relationship="Self.FK__DocumentI__Categ__276EDEB3" FromRole="DocumentInformation" ToRole="DocumentCategoryInfo" />
+    <NavigationProperty Name="FileInformations" Relationship="Self.FK__FileInfor__Docum__2F10007B" FromRole="DocumentInformation" ToRole="FileInformation" />
+    <NavigationProperty Name="MetaDataInformations" Relationship="Self.FK__MetaDataI__Docum__2B3F6F97" FromRole="DocumentInformation" ToRole="MetaDataInformation" />
+  </EntityType>
+  <EntityType Name="FileInformation">
+    <Key>
+      <PropertyRef Name="FileIdentity" />
+    </Key>
+    <Property Name="FileIdentity" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DocumentyIdentity" Type="Int64" Nullable="false" />
+    <Property Name="FileNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="FileName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FileNameBangla" Type="String" MaxLength="450" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="FilePath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="FileStatus" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="DocumentInformation" Relationship="Self.FK__FileInfor__Docum__2F10007B" FromRole="FileInformation" ToRole="DocumentInformation" />
+  </EntityType>
+  <EntityType Name="MetaDataInformation">
+    <Key>
+      <PropertyRef Name="MetaIdentity" />
+    </Key>
+    <Property Name="MetaIdentity" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DocumentyIdentity" Type="Int64" Nullable="false" />
+    <Property Name="MetaName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MetaNameBangla" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="DocumentInformation" Relationship="Self.FK__MetaDataI__Docum__2B3F6F97" FromRole="MetaDataInformation" ToRole="DocumentInformation" />
+  </EntityType>
+  <Association Name="FK__DocumentI__Categ__276EDEB3">
+    <End Role="DocumentCategoryInfo" Type="Self.DocumentCategoryInfo" Multiplicity="1" />
+    <End Role="DocumentInformation" Type="Self.DocumentInformation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DocumentCategoryInfo">
+        <PropertyRef Name="CategoryId" />
+      </Principal>
+      <Dependent Role="DocumentInformation">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__FileInfor__Docum__2F10007B">
+    <End Role="DocumentInformation" Type="Self.DocumentInformation" Multiplicity="1" />
+    <End Role="FileInformation" Type="Self.FileInformation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DocumentInformation">
+        <PropertyRef Name="DocumentyIdentity" />
+      </Principal>
+      <Dependent Role="FileInformation">
+        <PropertyRef Name="DocumentyIdentity" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__MetaDataI__Docum__2B3F6F97">
+    <End Role="DocumentInformation" Type="Self.DocumentInformation" Multiplicity="1" />
+    <End Role="MetaDataInformation" Type="Self.MetaDataInformation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DocumentInformation">
+        <PropertyRef Name="DocumentyIdentity" />
+      </Principal>
+      <Dependent Role="MetaDataInformation">
+        <PropertyRef Name="DocumentyIdentity" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SPL_HOME_TASKEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="DocumentCategoryInfoes" EntityType="Self.DocumentCategoryInfo" />
+    <EntitySet Name="DocumentInformations" EntityType="Self.DocumentInformation" />
+    <EntitySet Name="FileInformations" EntityType="Self.FileInformation" />
+    <EntitySet Name="MetaDataInformations" EntityType="Self.MetaDataInformation" />
+    <AssociationSet Name="FK__DocumentI__Categ__276EDEB3" Association="Self.FK__DocumentI__Categ__276EDEB3">
+      <End Role="DocumentCategoryInfo" EntitySet="DocumentCategoryInfoes" />
+      <End Role="DocumentInformation" EntitySet="DocumentInformations" />
+    </AssociationSet>
+    <AssociationSet Name="FK__FileInfor__Docum__2F10007B" Association="Self.FK__FileInfor__Docum__2F10007B">
+      <End Role="DocumentInformation" EntitySet="DocumentInformations" />
+      <End Role="FileInformation" EntitySet="FileInformations" />
+    </AssociationSet>
+    <AssociationSet Name="FK__MetaDataI__Docum__2B3F6F97" Association="Self.FK__MetaDataI__Docum__2B3F6F97">
+      <End Role="DocumentInformation" EntitySet="DocumentInformations" />
+      <End Role="MetaDataInformation" EntitySet="MetaDataInformations" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

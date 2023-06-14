@@ -1,0 +1,36 @@
+﻿@model SPL_HOME_TASK.Models.DocumentCategoryInfo
+@using (Html.BeginForm("CategoryInsert", "Documets", FormMethod.Post, new { id = "fcat-edit" }))
+{
+    @Html.HiddenFor(x => x.CategoryId)
+<div class=" form-group row">
+    <div class="col-3"> 
+        <label class="col-form-label text-end font-w">Category Name<sup class="text-danger">*</sup></label>
+        @Html.TextBoxFor(x => x.CategoryName, new { @class = "form-control", placeholder = "Enter Category Name" })
+        @Html.ValidationMessageFor(x => x.CategoryName, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="col-3">
+        <label class="col-form-label text-end font-w">Category Name Bangla</label>
+        @Html.TextBoxFor(x => x.CategoryNameBangla, new { @class = "form-control", placeholder = "Enter Category Name Bangla" })
+        @Html.ValidationMessageFor(x => x.CategoryNameBangla, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="col-4">
+        <label class="col-form-label text-end font-w">Description</label>
+        @Html.TextAreaFor(x => x.Description, new { @class = "form-control h-25", placeholder = "Enter Description" })
+        @Html.ValidationMessageFor(x => x.Description, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="col-1">
+        <label class="col-form-label text-end font-w">Status<sup class="text-danger">*</sup></label>
+        <div class="pt-3">
+            @Html.CheckBoxFor(x => x.Status)
+        </div>
+    </div>
+
+    <div class="col-1 pt-5">
+        <button type="button" class="btn btn-success btn-sm" id="update-submit">Update</button>
+    </div>
+</div>
+}
+
